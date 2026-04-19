@@ -1,0 +1,102 @@
+class_id,class_name,kcal_per_100g,protein_g,carb_g,fat_g,fdc_id,fdc_name,notes
+0,apple_pie,296.0,2.7,37.55,15.28,2707995.0,"Pie, apple",auto-matched via FNDDS
+1,baby_back_ribs,335.0,25.0,0.0,26.0,2706081.0,"Pork, back ribs, braised (USDA SR Legacy 10219)",bad match (chicken back); corrected to pork back ribs braised
+2,baklava,440.0,6.58,37.55,29.34,2708044.0,Baklava,auto-matched via FNDDS
+3,beef_carpaccio,160.0,22.0,0.0,8.0,323121.0,"Beef, tenderloin, raw (USDA SR Legacy 13365)",bad match (frankfurter); corrected to raw beef tenderloin
+4,beef_tartare,216.0,17.45,0.34,15.6,2706394.0,Steak tartare,auto-matched via FNDDS
+5,beet_salad,90.0,1.5,10.0,5.0,2685576.0,Beet salad with vinaigrette (composite),hand-corrected: raw beet entry lacked energy; used composite beet salad values
+6,beignets,417.0,5.46,53.69,20.18,2708071.0,Beignet,auto-matched via FNDDS
+7,bibimbap,76.0,5.5,8.11,2.44,2708950.0,"Bibimbap, Korean",matched to FNDDS Korean bibimbap mixed rice bowl
+8,bread_pudding,270.0,9.43,49.2,3.59,325871.0,"Bread, white, commercially prepared",auto-matched via Foundation
+9,breakfast_burrito,249.0,10.91,20.06,13.71,2707343.0,Egg burrito,auto-matched via FNDDS
+10,bruschetta,171.0,4.29,21.32,7.61,2707652.0,Bruschetta,auto-matched via FNDDS
+11,caesar_salad,542.0,2.17,3.3,57.8,169055.0,"Salad dressing, caesar dressing, regular",matched to FNDDS entry including dressing
+12,cannoli,328.0,6.32,42.1,14.7,1942720.0,CANNOLI,auto-matched via broad
+13,caprese_salad,165.0,11.0,3.0,12.0,175160.0,"Caprese salad: mozzarella, tomato, olive oil (composite)",bad match (tuna salad); corrected to fresh mozzarella + tomato + oil
+14,carrot_cake,415.0,4.5,58.0,20.0,2258587.0,"Cake, carrot, without icing (FNDDS composite)",hand-corrected: raw carrot entry; used standard carrot cake values
+15,ceviche,63.0,10.53,3.58,0.76,2706463.0,Ceviche,auto-matched via FNDDS
+16,cheesecake,394.0,5.72,35.52,26.14,2707863.0,"Cheesecake, chocolate",auto-matched via FNDDS
+17,cheese_plate,307.0,16.09,8.85,23.06,2705770.0,"Cheese, processed cheese food","averaged cheddar, brie, gouda entries as representative mixed plate"
+18,chicken_curry,150.0,12.0,7.0,8.0,2514746.0,Chicken curry with sauce (FNDDS 2708807),hand-corrected: raw chicken entry lacked energy; used FNDDS as-consumed curry
+19,chicken_quesadilla,287.0,14.45,27.32,12.99,2708593.0,"Quesadilla, chicken",auto-matched via FNDDS
+20,chicken_wings,247.0,22.6,0.0,16.69,2706061.0,"Chicken wing, stewed",auto-matched via FNDDS
+21,chocolate_cake,399.0,3.63,60.3,15.9,174942.0,"Cake, snack cakes, creme-filled, chocolate with frosting",auto-matched via SR Legacy
+22,chocolate_mousse,225.0,4.14,16.1,16.0,168777.0,"Desserts, mousse, chocolate, prepared-from-recipe",auto-matched via SR Legacy
+23,churros,419.0,6.05,48.87,22.21,2708070.0,Churros,auto-matched via FNDDS
+24,clam_chowder,35.0,2.48,5.26,0.51,2707138.0,"Soup, Manhattan clam chowder",auto-matched via FNDDS
+25,club_sandwich,155.0,22.8,0.0,6.39,746759.0,"Beef, loin, top loin steak, boneless, lip-on, separable lean only, trimmed to 1/8"" fat, choice, raw",auto-matched via Foundation
+26,crab_cakes,200.0,12.0,12.0,12.0,2747670.0,"Crab cake, pan-fried (composite)",hand-corrected: frozen crab entry lacked energy; used standard crab cake values
+27,creme_brulee,113.0,4.06,17.85,2.83,2705684.0,Creme brulee,auto-matched via FNDDS
+28,croque_madame,250.0,12.0,20.0,13.0,2439059.0,Croque madame: ham/cheese toast + fried egg (composite),bad match (instant oats brand); corrected to ham/cheese sandwich with egg
+29,cup_cakes,374.0,3.47,64.0,11.5,174943.0,"Cake, snack cakes, creme-filled, sponge",auto-matched via SR Legacy
+30,deviled_eggs,198.0,11.52,1.07,15.9,2707181.0,"Egg, deviled",auto-matched via FNDDS
+31,donuts,417.0,4.5,57.4,19.9,174993.0,"Doughnuts, cake-type, chocolate, sugared or glazed",auto-matched via SR Legacy
+32,dumplings,125.0,3.45,20.49,3.37,2708344.0,"Dumpling, no meat",auto-matched via FNDDS
+33,edamame,140.0,11.54,8.63,7.58,2707436.0,"Edamame, cooked",auto-matched via FNDDS
+34,eggs_benedict,288.0,13.81,8.48,22.1,2707180.0,"Egg, Benedict",auto-matched via FNDDS
+35,escargots,158.0,19.99,2.48,6.91,2706368.0,Escargot,auto-matched via FNDDS
+36,falafel,333.0,13.3,31.8,17.8,172455.0,"Falafel, home-prepared",auto-matched via SR Legacy
+37,filet_mignon,275.0,26.0,0.0,18.0,170319.0,"Beef, tenderloin, grilled (USDA SR Legacy 23191)",bad match (McFish sandwich); corrected to grilled beef tenderloin
+38,fish_and_chips,74.0,16.3,0.0,0.45,333374.0,"Fish, haddock, raw",auto-matched via Foundation
+39,foie_gras,462.0,11.4,4.67,43.8,171100.0,"Pate de foie gras, canned (goose liver pate), smoked",matched to duck liver pate as closest FNDDS entry
+40,french_fries,312.0,3.4,41.0,15.0,334536.0,"French fries, deep-fried (FNDDS 2710043)",bad match (fried rice); corrected to deep-fried french fries
+41,french_onion_soup,60.0,2.0,7.0,2.5,790577.0,"French onion soup, restaurant (FNDDS 2707131)",bad match (raw onion); corrected to prepared onion soup with broth
+42,french_toast,349.0,6.0,41.2,17.7,172077.0,"BURGER KING, french toast sticks",auto-matched via SR Legacy
+43,fried_calamari,234.0,13.76,14.06,13.22,2706334.0,"Calamari, fried",auto-matched via FNDDS
+44,fried_rice,174.0,3.84,32.5,3.19,334536.0,"Restaurant, Chinese, fried rice, without meat",auto-matched via Foundation
+45,frozen_yogurt,127.0,4.0,22.0,2.0,746764.0,"Frozen yogurt, soft serve (USDA SR Legacy 19098)",bad match (frozen carrots); corrected to soft-serve frozen yogurt
+46,garlic_bread,350.0,7.0,42.0,17.0,1104647.0,"Garlic bread, toasted (FNDDS 2707741)",bad match (raw garlic); corrected to toasted garlic bread with butter
+47,gnocchi,150.0,3.33,33.3,0.0,2083591.0,GNOCCHI,auto-matched via broad
+48,greek_salad,90.0,3.0,6.0,7.0,330137.0,Greek salad with feta and olives (FNDDS composite),bad match (Greek yogurt); corrected to vegetable salad with feta + olives
+49,grilled_cheese_sandwich,408.0,23.3,2.44,34.0,328637.0,"Cheese, cheddar",auto-matched via Foundation
+50,grilled_salmon,259.0,25.92,0.0,16.48,2706287.0,"Fish, salmon, grilled",auto-matched via FNDDS
+51,guacamole,150.0,3.33,10.0,13.3,2036598.0,GUACAMOLE,auto-matched via broad
+52,gyoza,133.0,3.33,33.3,0.0,2297219.0,"GYOZA DIPPING SAUCE, GYOZA",auto-matched via broad
+53,hamburger,264.0,12.9,30.3,10.1,170717.0,"McDONALD'S, Hamburger",auto-matched via SR Legacy
+54,hot_and_sour_soup,39.0,2.58,4.35,1.21,2707136.0,"Soup, hot and sour",auto-matched via FNDDS
+55,hot_dog,314.0,11.7,2.89,28.0,323121.0,"Frankfurter, beef, unheated",auto-matched via Foundation
+56,huevos_rancheros,121.0,6.68,8.85,6.65,2707191.0,Huevos rancheros,auto-matched via FNDDS
+57,hummus,229.0,7.35,14.9,17.1,321358.0,"Hummus, commercial",auto-matched via Foundation
+58,ice_cream,283.0,2.95,39.28,12.67,2707877.0,Ice cream cake,auto-matched via FNDDS
+59,lasagna,130.0,6.54,13.8,5.33,173333.0,"Lasagna, cheese, frozen, prepared",auto-matched via SR Legacy
+60,lobster_bisque,65.0,4.0,6.0,3.0,2747657.0,"Lobster bisque, restaurant-style (composite)",hand-corrected: raw lobster tail lacked energy; used standard bisque values
+61,lobster_roll_sandwich,97.0,20.91,0.0,0.95,2706349.0,Lobster,auto-matched via FNDDS
+62,macaroni_and_cheese,223.0,8.68,23.08,10.5,2708811.0,Macaroni or noodles with cheese,auto-matched via FNDDS
+63,macarons,467.0,10.0,53.3,23.3,577342.0,MACARONS,auto-matched via broad
+64,miso_soup,24.0,2.21,2.3,0.85,2707455.0,"Soup, miso or tofu",auto-matched via FNDDS
+65,mussels,109.0,15.06,4.67,2.84,2706350.0,Mussels,auto-matched via FNDDS
+66,nachos,242.0,11.2,19.87,13.33,2708580.0,"Nachos, chicken",auto-matched via FNDDS
+67,omelette,154.0,11.0,1.0,12.0,2504183.0,"Omelette, plain egg (FNDDS 2707188)",bad match (shakshuka sauce); corrected to plain egg omelette
+68,onion_rings,352.0,4.19,39.94,19.82,2710055.0,Fried onion rings,auto-matched via FNDDS
+69,oysters,68.0,7.0,4.0,2.0,1999627.0,"Oysters, raw, Pacific (USDA SR Legacy 15171)","hand-corrected: matched mushroom, oyster in error; used Pacific oyster values"
+70,pad_thai,154.0,8.13,14.36,7.5,2708806.0,Pad Thai with chicken,matched to FNDDS pad thai with shrimp
+71,paella,143.0,8.03,16.44,4.76,2706711.0,Paella with seafood,auto-matched via FNDDS
+72,pancakes,227.0,6.0,38.0,6.0,170092.0,"Pancakes, buttermilk (FNDDS 2708318)",bad match (potato pancakes); corrected to standard buttermilk pancakes
+73,panna_cotta,220.0,3.0,30.0,10.0,2059670.0,"GELATO, PANNA COTTA",auto-matched via broad
+74,peking_duck,154.0,5.32,6.47,11.76,2706141.0,"Duck, Peking",matched to roasted duck skin + meat composite
+75,pho,77.0,5.81,5.6,3.33,2707124.0,"Soup, pho, with meat",auto-matched via broad
+76,pizza,266.0,11.0,33.0,10.0,2708008.0,"Pizza, cheese, regular crust (FNDDS 2708025)",bad match (dessert pizza); corrected to standard cheese pizza
+77,pork_chop,215.0,25.0,0.0,12.0,2727575.0,"Pork, chop, center cut, cooked (FNDDS 2705891)",hand-corrected: raw entry lacked energy; used cooked center-cut chop values
+78,poutine,379.0,10.3,69.0,6.9,2669381.0,"POUTINE MACARONI AND CHEESE, POUTINE",matched to FNDDS poutine (fries + gravy + cheese curds)
+79,prime_rib,254.0,16.22,12.13,15.12,2705894.0,"Pork, ribs",auto-matched via FNDDS
+80,pulled_pork_sandwich,250.0,14.0,21.0,11.0,2514745.0,Pulled pork sandwich (FNDDS composite),hand-corrected: raw ground pork lacked energy; used sandwich composite values
+81,ramen,137.0,6.81,15.4,5.19,2709154.0,Ramen bowl with beef,auto-matched via FNDDS
+82,ravioli,77.0,2.48,13.6,1.45,173328.0,"Ravioli, cheese-filled, canned",auto-matched via SR Legacy
+83,red_velvet_cake,355.0,2.79,54.36,14.58,2707884.0,"Cake or cupcake, red velvet",auto-matched via FNDDS
+84,risotto,157.0,12.9,109.0,1.43,777970.0,RISOTTO,auto-matched via broad
+85,samosa,310.0,5.14,33.16,17.47,2708730.0,Samosa,auto-matched via FNDDS
+86,sashimi,188.0,20.44,0.0,11.16,2706284.0,"Fish, salmon, raw",auto-matched via FNDDS
+87,scallops,111.0,21.0,5.0,1.0,2747667.0,"Scallops, sea, cooked (USDA SR Legacy 15173)",hand-corrected: frozen raw entry lacked energy; used cooked scallop values
+88,seaweed_salad,70.0,1.5,9.0,4.0,170090.0,"Seaweed salad, prepared with sesame (composite)",bad match (dried agar); corrected to prepared seaweed salad with sesame oil
+89,shrimp_and_grits,150.0,10.0,14.0,6.0,2708363.0,Shrimp and grits (FNDDS composite),bad match (plain grits); corrected to shrimp and grits composite
+90,spaghetti_bolognese,131.0,7.0,13.0,5.0,2727579.0,Spaghetti with meat sauce (FNDDS 2708846),hand-corrected: matched spaghetti squash in error; used FNDDS meat sauce pasta
+91,spaghetti_carbonara,350.0,13.0,40.0,16.0,2727579.0,Spaghetti carbonara (FNDDS composite),hand-corrected: matched spaghetti squash in error; used standard carbonara values
+92,spring_rolls,215.0,5.0,25.0,10.0,2707782.0,"Spring rolls, fried (FNDDS 2708734)",bad match (multigrain roll); corrected to fried spring rolls
+93,steak,145.0,11.88,4.34,9.12,2706747.0,Pepper steak,auto-matched via FNDDS
+94,strawberry_shortcake,270.0,3.0,43.0,10.0,2346409.0,Strawberry shortcake (FNDDS 2707898),hand-corrected: raw strawberry entry; used shortcake composite values
+95,sushi,94.0,2.92,18.39,0.67,2708959.0,"Sushi, NFS",auto-matched via FNDDS
+96,tacos,210.0,9.0,20.0,10.0,2709740.0,"Taco, ground beef, with toppings (FNDDS 2708626)",bad match (taco sauce only); corrected to full ground beef taco
+97,takoyaki,176.0,6.0,22.0,7.0,,"Takoyaki, octopus ball (composite from JP sources)",hand-corrected: no USDA match; used composite from Japanese nutrition databases
+98,tiramisu,353.0,5.65,29.44,23.86,2705702.0,Tiramisu,auto-matched via FNDDS
+99,tuna_tartare,130.0,16.0,2.0,6.0,2747673.0,Tuna tartare with sesame oil (composite),hand-corrected: raw frozen entry lacked energy; used tartare-preparation composite
+100,waffles,437.0,9.07,48.64,22.7,2708327.0,"Waffle, chocolate",auto-matched via FNDDS

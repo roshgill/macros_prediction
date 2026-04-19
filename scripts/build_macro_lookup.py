@@ -70,15 +70,21 @@ NUTRIENT_IDS = {
 }
 
 
-def search_food(query: str, data_type: str = "Survey (FNDDS)") -> list[dict]:
-    """Search USDA FoodData Central for a food query."""
-    params = {
+def search_food(query: str, data_type: str | None = "Survey (FNDDS)") -> list[dict]:
+    """Search USDA FoodData Central for a food query.
+
+    Returns empty list on 400/404 (no match in data_type) rather than raising.
+    """
+    params: dict = {
         "query": query,
-        "dataType": data_type,
         "pageSize": 5,
         "api_key": USDA_API_KEY,
     }
+    if data_type:
+        params["dataType"] = [data_type]
     resp = requests.get(USDA_SEARCH_URL, params=params, timeout=10)
+    if resp.status_code in (400, 404):
+        return []
     resp.raise_for_status()
     return resp.json().get("foods", [])
 
@@ -104,7 +110,7 @@ def build_macro_row(class_id: int, class_name: str) -> dict:
     query = class_to_query(class_name)
     note = MANUAL_NOTES.get(class_name, "")
 
-    # Try FNDDS first (as-consumed), fall back to Foundation Foods
+    # Try FNDDS first (as-consumed), fall back through other data types
     foods = search_food(query, data_type="Survey (FNDDS)")
     data_type_used = "FNDDS"
     if not foods:
@@ -113,6 +119,9 @@ def build_macro_row(class_id: int, class_name: str) -> dict:
     if not foods:
         foods = search_food(query, data_type="SR Legacy")
         data_type_used = "SR Legacy"
+    if not foods:
+        foods = search_food(query, data_type=None)  # broad search, any data type
+        data_type_used = "broad"
 
     if not foods:
         print(f"  [WARN] No results for '{class_name}' — filling zeros")
