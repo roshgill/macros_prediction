@@ -1,0 +1,13 @@
+data/raw/
+models/*.pt
+models/*.pkl
+.env
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+.DS_Store
+dist/
+*.egg-info/
+.venv/
+venv/
