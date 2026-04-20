@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optimal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <div class="noise"></div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-mark">OPTIMAL</div>
+
+      <!-- Body scan figure -->
+      <div class="body-scan-wrap">
+        <svg class="body-scan" viewBox="0 0 240 400" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <!-- Orbit paths (used by animateMotion) -->
+          <path id="op-h" d="M 120,200 m -110,0 a 110,28 0 1,0 220,0 a 110,28 0 1,0 -220,0"/>
+          <path id="op-v" d="M 120,200 m -32,0 a 32,128 0 1,0 64,0 a 32,128 0 1,0 -64,0"/>
+
+          <!-- Orbit rings -->
+          <ellipse cx="120" cy="200" rx="110" ry="28" stroke="rgba(184,255,95,0.18)" stroke-width="1.2" stroke-dasharray="7 5"/>
+          <ellipse cx="120" cy="200" rx="32" ry="128" stroke="rgba(184,255,95,0.13)" stroke-width="1" stroke-dasharray="7 5"/>
+
+          <!-- Human silhouette -->
+          <circle cx="120" cy="52" r="26" fill="rgba(184,255,95,0.10)" stroke="rgba(184,255,95,0.55)" stroke-width="1.2"/>
+          <rect x="113" y="77" width="14" height="13" rx="3" fill="rgba(184,255,95,0.10)" stroke="rgba(184,255,95,0.4)" stroke-width="1"/>
+          <path d="M90,90 C84,90 78,95 77,104 L70,162 L170,162 L163,104 C162,95 156,90 150,90 Z" fill="rgba(184,255,95,0.08)" stroke="rgba(184,255,95,0.45)" stroke-width="1.2"/>
+          <path d="M90,97 L57,160 C55,165 57,170 62,171 L71,172 L92,118" fill="rgba(184,255,95,0.07)" stroke="rgba(184,255,95,0.32)" stroke-width="1"/>
+          <path d="M150,97 L183,160 C185,165 183,170 178,171 L169,172 L148,118" fill="rgba(184,255,95,0.07)" stroke="rgba(184,255,95,0.32)" stroke-width="1"/>
+          <path d="M77,162 L72,190 L168,190 L163,162 Z" fill="rgba(184,255,95,0.08)" stroke="rgba(184,255,95,0.4)" stroke-width="1"/>
+          <path d="M100,190 L93,302 C92,309 97,313 103,313 L114,313 L115,215 Z" fill="rgba(184,255,95,0.08)" stroke="rgba(184,255,95,0.32)" stroke-width="1"/>
+          <path d="M140,190 L147,302 C148,309 143,313 137,313 L126,313 L125,215 Z" fill="rgba(184,255,95,0.08)" stroke="rgba(184,255,95,0.32)" stroke-width="1"/>
+          <ellipse cx="103" cy="317" rx="13" ry="5.5" fill="rgba(184,255,95,0.10)" stroke="rgba(184,255,95,0.38)" stroke-width="1"/>
+          <ellipse cx="137" cy="317" rx="13" ry="5.5" fill="rgba(184,255,95,0.10)" stroke="rgba(184,255,95,0.38)" stroke-width="1"/>
+
+          <!-- Scan sweep line -->
+          <line x1="18" x2="222" y1="10" y2="10" stroke="rgba(184,255,95,0.55)" stroke-width="1.5">
+            <animate attributeName="y1" values="10;370;10" dur="3.5s" repeatCount="indefinite" calcMode="ease-in-out"/>
+            <animate attributeName="y2" values="10;370;10" dur="3.5s" repeatCount="indefinite" calcMode="ease-in-out"/>
+            <animate attributeName="opacity" values="0;1;0.9;0" keyTimes="0;0.05;0.9;1" dur="3.5s" repeatCount="indefinite"/>
+          </line>
+
+          <!-- Horizontal orbit dot -->
+          <circle r="5.5" fill="#b8ff5f" opacity="0.9">
+            <animateMotion dur="5s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#op-h"/>
+            </animateMotion>
+          </circle>
+          <!-- Vertical orbit dot -->
+          <circle r="3.5" fill="rgba(184,255,95,0.7)" opacity="0.8">
+            <animateMotion dur="9s" repeatCount="indefinite" rotate="auto" begin="2s">
+              <mpath href="#op-v"/>
+            </animateMotion>
+          </circle>
+
+          <!-- Node pulses at joints -->
+          <circle cx="120" cy="52" r="3.5" fill="#b8ff5f" class="node-pulse"/>
+          <circle cx="70" cy="162" r="3" fill="rgba(184,255,95,0.8)" class="node-pulse" style="animation-delay:0.5s"/>
+          <circle cx="170" cy="162" r="3" fill="rgba(184,255,95,0.8)" class="node-pulse" style="animation-delay:1s"/>
+          <circle cx="120" cy="190" r="2.5" fill="rgba(184,255,95,0.6)" class="node-pulse" style="animation-delay:1.5s"/>
+        </svg>
+      </div>
+
+      <h1 class="hero-title">
+        Is your meal<br>
+        <span class="optimal-word">Optimal</span><span class="optimal-q">?</span>
+      </h1>
+      <p class="hero-sub">Take a photo of your meal and check if it aligns with the most meticulously tested longevity protocol ever.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Error banner -->
+    <div id="error-banner" class="error-banner hidden">
+      <span class="error-icon">⚠</span>
+      <span id="error-text"></span>
+      <button class="error-close" onclick="clearError()">×</button>
+    </div>
+
+    <!-- Upload zone -->
+    <section class="upload-section">
+      <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Upload food image">
+        <input type="file" id="file-input" accept="image/*" hidden />
+        <div class="drop-inner">
+          <div class="drop-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <p class="drop-label">Drop a food photo here</p>
+          <p class="drop-sub">or <span class="drop-link">click to browse</span></p>
+          <p class="drop-formats">JPG, PNG, WEBP · max 10 MB</p>
+        </div>
+      </div>
+
+      <!-- Body metrics inputs -->
+      <div class="bw-row">
+        <label class="bw-label" for="body-weight">Weight:</label>
+        <input type="number" id="body-weight" class="bw-input mono" value="154" min="66" max="440" step="1" />
+        <span class="bw-unit">lbs</span>
+        <label class="bw-label" for="height-ft">Height:</label>
+        <input type="number" id="height-ft" class="bw-input mono bw-input-sm" value="6" min="3" max="7" step="1" />
+        <span class="bw-unit">ft</span>
+        <input type="number" id="height-in" class="bw-input mono bw-input-sm" value="0" min="0" max="11" step="1" />
+        <span class="bw-unit">in</span>
+      </div>
+    </section>
+
+    <!-- Sample images -->
+    <section class="samples-section">
+      <p class="samples-label">— try a sample —</p>
+      <div id="samples-row" class="samples-row">
+        <div class="sample-skeleton"></div>
+        <div class="sample-skeleton"></div>
+        <div class="sample-skeleton"></div>
+        <div class="sample-skeleton"></div>
+        <div class="sample-skeleton"></div>
+        <div class="sample-skeleton"></div>
+      </div>
+    </section>
+
+    <!-- Results panel -->
+    <section id="results" class="results hidden">
+
+      <!-- Image + dish label -->
+      <div class="result-photo-wrap">
+        <div class="result-photo-card">
+          <img id="result-img" src="" alt="Uploaded food" class="result-img" />
+          <div id="gradcam-overlay" class="gradcam-overlay hidden">
+            <img id="gradcam-img" src="" alt="Grad-CAM heatmap" class="gradcam-img" />
+          </div>
+        </div>
+        <p id="dish-label" class="dish-label"></p>
+        <button id="gradcam-btn" class="gradcam-btn" onclick="toggleGradcam()">
+          <span id="gradcam-btn-text">Why this prediction?</span>
+          <span id="gradcam-spinner" class="btn-spinner hidden"></span>
+        </button>
+      </div>
+
+      <!-- Right column: macros + score -->
+      <div class="macro-panel">
+
+        <!-- Shimmer skeleton -->
+        <div id="shimmer" class="shimmer-wrap">
+          <div class="shimmer-row"><div class="shimmer-block wide"></div><div class="shimmer-block narrow"></div><div class="shimmer-block narrow"></div></div>
+          <div class="shimmer-row"><div class="shimmer-block wide"></div><div class="shimmer-block narrow"></div><div class="shimmer-block narrow"></div></div>
+          <div class="shimmer-row"><div class="shimmer-block wide"></div><div class="shimmer-block narrow"></div><div class="shimmer-block narrow"></div></div>
+          <div class="shimmer-row"><div class="shimmer-block wide"></div><div class="shimmer-block narrow"></div><div class="shimmer-block narrow"></div></div>
+          <div class="shimmer-score"></div>
+        </div>
+
+        <!-- Actual data -->
+        <div id="macro-data" class="macro-data hidden">
+
+          <div class="macro-header">
+            <span class="macro-col-label">Nutrient</span>
+            <span class="macro-col-label">per 100g</span>
+            <span class="macro-col-label">per serving</span>
+          </div>
+
+          <div class="macro-row" data-macro="kcal">
+            <span class="macro-name">Calories</span>
+            <div class="macro-val-wrap">
+              <span class="macro-val mono" id="kcal-100g">—</span>
+              <span class="macro-unit">kcal</span>
+              <span class="macro-uncertainty" id="kcal-unc"></span>
+            </div>
+            <div class="macro-val-wrap">
+              <span class="macro-val mono" id="kcal-srv">—</span>
+              <span class="macro-unit">kcal</span>
+            </div>
+          </div>
+
+          <div class="macro-row" data-macro="protein">
+            <span class="macro-name">Protein</span>
+            <div class="macro-val-wrap">
+              <span class="macro-val mono" id="protein-100g">—</span>
+              <span class="macro-unit">g</span>
+              <span class="macro-uncertainty" id="protein-unc"></span>
+            </div>
+            <div class="macro-val-wrap">
+              <span class="macro-val mono" id="protein-srv">—</span>
+              <span class="macro-unit">g</span>
+            </div>
+          </div>
+
+          <div class="macro-row" data-macro="carbs">
+            <span class="macro-name">Carbs</span>
+            <div class="macro-val-wrap">
+              <span class="macro-val mono" id="carbs-100g">—</span>
+              <span class="macro-unit">g</span>
+              <span class="macro-uncertainty" id="carbs-unc"></span>
+            </div>
+            <div class="macro-val-wrap">
+              <span class="macro-val mono" id="carbs-srv">—</span>
+              <span class="macro-unit">g</span>
+            </div>
+          </div>
+
+          <div class="macro-row" data-macro="fat">
+            <span class="macro-name">Fat</span>
+            <div class="macro-val-wrap">
+              <span class="macro-val mono" id="fat-100g">—</span>
+              <span class="macro-unit">g</span>
+              <span class="macro-uncertainty" id="fat-unc"></span>
+            </div>
+            <div class="macro-val-wrap">
+              <span class="macro-val mono" id="fat-srv">—</span>
+              <span class="macro-unit">g</span>
+            </div>
+          </div>
+
+          <!-- Slider -->
+          <div class="slider-wrap">
+            <label class="slider-label">
+              Portion weight:
+              <span class="mono" id="slider-val">200</span>g
+            </label>
+            <input type="range" id="weight-slider" min="50" max="500" value="200" step="5" class="slider" />
+            <div class="slider-ticks">
+              <span>50g</span><span>200g</span><span>500g</span>
+            </div>
+          </div>
+
+          <p id="inference-time" class="inference-time"></p>
+
+          <!-- Blueprint score panel -->
+          <div id="score-panel" class="score-panel">
+            <div class="score-header">
+              <div class="score-big-wrap">
+                <span class="score-number mono" id="score-number">—</span>
+                <span class="score-denom">&thinsp;/ 100</span>
+              </div>
+              <span class="score-verdict" id="score-verdict"></span>
+            </div>
+
+            <div class="score-bars">
+              <div class="score-bar-row">
+                <span class="score-bar-label">Protein adequacy</span>
+                <div class="score-bar-track">
+                  <div class="score-bar-fill" id="bar-protein"></div>
+                </div>
+                <span class="score-bar-val mono" id="val-protein">—</span>
+              </div>
+              <div class="score-bar-row">
+                <span class="score-bar-label">Macro balance</span>
+                <div class="score-bar-track">
+                  <div class="score-bar-fill" id="bar-ratio"></div>
+                </div>
+                <span class="score-bar-val mono" id="val-ratio">—</span>
+              </div>
+              <div class="score-bar-row">
+                <span class="score-bar-label">Calorie density</span>
+                <div class="score-bar-track">
+                  <div class="score-bar-fill" id="bar-density"></div>
+                </div>
+                <span class="score-bar-val mono" id="val-density">—</span>
+              </div>
+              <div class="score-bar-row">
+                <span class="score-bar-label">Portion size</span>
+                <div class="score-bar-track">
+                  <div class="score-bar-fill" id="bar-size"></div>
+                </div>
+                <span class="score-bar-val mono" id="val-size">—</span>
+              </div>
+            </div>
+
+            <p class="score-advice" id="score-advice"></p>
+            <p class="score-targets mono" id="score-targets"></p>
+            <p class="score-disclaimer">Protocol targets scale by BSA (Mosteller formula). Macro-only scoring — does not account for fat quality, fiber, or food processing.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Optimal · AIPI 540 · Duke University · Not medical advice.</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
