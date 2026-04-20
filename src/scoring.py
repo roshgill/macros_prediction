@@ -38,6 +38,8 @@ def calculate_personal_targets(height_cm: float, weight_kg: float) -> dict:
         "daily_fat_g": BRYAN_DAILY["fat_g"] * scale,
         "per_meal_kcal": (BRYAN_DAILY["kcal"] * scale) / BRYAN_MEALS_PER_DAY,
         "per_meal_protein_g": (BRYAN_DAILY["protein_g"] * scale) / BRYAN_MEALS_PER_DAY,
+        "per_meal_carb_g": (BRYAN_DAILY["carb_g"] * scale) / BRYAN_MEALS_PER_DAY,
+        "per_meal_fat_g": (BRYAN_DAILY["fat_g"] * scale) / BRYAN_MEALS_PER_DAY,
         "user_bsa": round(user_bsa, 3),
         "scale_factor": round(scale, 3),
     }
