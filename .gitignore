@@ -1,6 +1,4 @@
 data/raw/
-models/*.pt
-models/*.pkl
 .env
 __pycache__/
 .pytest_cache/
