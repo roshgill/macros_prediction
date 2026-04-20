@@ -20,19 +20,46 @@ const gradcamBtn      = document.getElementById('gradcam-btn');
 const gradcamBtnText  = document.getElementById('gradcam-btn-text');
 const gradcamSpinner  = document.getElementById('gradcam-spinner');
 const dishLabel       = document.getElementById('dish-label');
-const weightSlider    = document.getElementById('weight-slider');
-const sliderVal       = document.getElementById('slider-val');
 const inferenceTime   = document.getElementById('inference-time');
 const samplesRow      = document.getElementById('samples-row');
 const bodyWeightInput = document.getElementById('body-weight');
 const heightFtInput   = document.getElementById('height-ft');
 const heightInInput   = document.getElementById('height-in');
 
+// ── Blueprint tips ─────────────────────────────────────────────────────────────
+const TIPS = [
+  "Don't eat within 3 hours of sleep — fasting overnight supports cellular repair.",
+  "Target 25g of protein per meal. Spread it evenly; don't front-load.",
+  "Eat the same meals daily to eliminate decision fatigue and master absorption.",
+  "80% of your diet should come from whole plants. Diversity is the goal.",
+  "Extra virgin olive oil every day — 30ml is the minimum effective dose.",
+  "Limit your eating window to 6–8 hours. Time-restricted eating amplifies every other intervention.",
+  "Caloric restriction is precision, not deprivation. Know your numbers exactly.",
+  "Measure biomarkers quarterly — data beats intuition every single time.",
+  "Dark leafy greens at every meal. Sulforaphane is your best ally.",
+  "Avoid ultra-processed foods entirely. If it has more than 5 ingredients, reconsider.",
+];
+
+function startTips() {
+  const el = document.getElementById('tips-text');
+  if (!el) return;
+  let idx = Math.floor(Math.random() * TIPS.length);
+  el.textContent = TIPS[idx];
+  setInterval(() => {
+    el.classList.add('fade');
+    setTimeout(() => {
+      idx = (idx + 1) % TIPS.length;
+      el.textContent = TIPS[idx];
+      el.classList.remove('fade');
+    }, 450);
+  }, 6000);
+}
+
 // ── Init ───────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   loadSamples();
   setupUploadZone();
-  weightSlider.addEventListener('input', onSliderChange);
+  startTips();
 });
 
 // ── Sample images ──────────────────────────────────────────────────────────────
@@ -67,15 +94,21 @@ async function submitSampleUrl(url) {
 
 // ── Upload zone ────────────────────────────────────────────────────────────────
 function setupUploadZone() {
+  const uploadBar    = document.getElementById('upload-bar');
+  const metricsBar   = document.getElementById('metrics-bar');
+
   dropZone.addEventListener('click', () => fileInput.click());
   dropZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') fileInput.click(); });
   fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
 
-  dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-  dropZone.addEventListener('drop', e => {
+  // Metrics inputs must not trigger the file picker
+  metricsBar.addEventListener('click', e => e.stopPropagation());
+
+  uploadBar.addEventListener('dragover',  e => { e.preventDefault(); uploadBar.classList.add('drag-over'); });
+  uploadBar.addEventListener('dragleave', e => { if (!uploadBar.contains(e.relatedTarget)) uploadBar.classList.remove('drag-over'); });
+  uploadBar.addEventListener('drop', e => {
     e.preventDefault();
-    dropZone.classList.remove('drag-over');
+    uploadBar.classList.remove('drag-over');
     if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
   });
 }
@@ -103,7 +136,6 @@ async function handleFile(file) {
 }
 
 async function runPredict(file) {
-  const servingG     = parseInt(weightSlider.value, 10);
   const weightLbs = parseFloat(bodyWeightInput.value) || 154;
   const heightFt  = parseFloat(heightFtInput.value)   || 6;
   const heightIn  = parseFloat(heightInInput.value)   || 0;
@@ -112,7 +144,6 @@ async function runPredict(file) {
 
   const fd = new FormData();
   fd.append('file', file);
-  fd.append('serving_g', servingG);
   fd.append('body_weight_kg', weightKg);
   fd.append('height_cm', heightCm);
 
@@ -121,87 +152,44 @@ async function runPredict(file) {
     const data = await resp.json();
     if (!resp.ok) { shimmer.classList.add('hidden'); showError(data.detail || 'Prediction failed.'); return; }
     currentPrediction = data;
-    renderResults(data, servingG);
+    renderResults(data);
   } catch {
     shimmer.classList.add('hidden');
     showError('Network error — is the server running?');
   }
 }
 
-function renderResults(data, weight) {
+function renderResults(data) {
   shimmer.classList.add('hidden');
   macroData.classList.remove('hidden');
 
-  // Per-100g
-  document.getElementById('kcal-100g').textContent    = fmt(data.kcal_per_100g);
-  document.getElementById('protein-100g').textContent = fmt(data.protein_g);
-  document.getElementById('carbs-100g').textContent   = fmt(data.carb_g);
-  document.getElementById('fat-100g').textContent     = fmt(data.fat_g);
-
-  // Uncertainties
-  document.getElementById('kcal-unc').textContent    = `±${fmt(data.uncertainty.kcal)} kcal`;
-  document.getElementById('protein-unc').textContent = `±${fmt(data.uncertainty.protein)} g`;
-  document.getElementById('carbs-unc').textContent   = `±${fmt(data.uncertainty.carb)} g`;
-  document.getElementById('fat-unc').textContent     = `±${fmt(data.uncertainty.fat)} g`;
-
-  updateServing(weight, data);
-
-  // Dish label
   if (data.top_classes?.length > 0) {
     const { name, confidence } = data.top_classes[0];
-    dishLabel.innerHTML = `Looks like: <strong>${name}</strong> <span style="color:var(--text-dim)">(${Math.round(confidence * 100)}%)</span>`;
+    dishLabel.innerHTML = `Looks like: <strong>${name.replace(/_/g, ' ')}</strong> <span style="color:var(--text-dim)">(${Math.round(confidence * 100)}%)</span>`;
   }
 
   inferenceTime.textContent = `Predicted in ${data.inference_ms} ms`;
 
-  // Score panel
-  if (data.score) renderScore(data.score, data);
-}
-
-// ── Slider ─────────────────────────────────────────────────────────────────────
-function onSliderChange() {
-  const w = parseInt(weightSlider.value, 10);
-  sliderVal.textContent = w;
-  if (currentPrediction) updateServing(w, currentPrediction);
-}
-
-function updateServing(weight, data) {
-  const f = weight / 100;
-  document.getElementById('kcal-srv').textContent    = fmt(data.kcal_per_100g * f);
-  document.getElementById('protein-srv').textContent = fmt(data.protein_g     * f);
-  document.getElementById('carbs-srv').textContent   = fmt(data.carb_g        * f);
-  document.getElementById('fat-srv').textContent     = fmt(data.fat_g         * f);
-}
-
-// ── Score panel ────────────────────────────────────────────────────────────────
-function renderScore(score, data = {}) {
-  document.getElementById('score-number').textContent = score.overall;
-
-  const verdictEl = document.getElementById('score-verdict');
-  verdictEl.textContent = score.verdict;
-  verdictEl.className = 'score-verdict ' + score.verdict.toLowerCase().replace(' ', '-');
-
-  const sub = score.subscores;
-  setBar('protein', sub.protein);
-  setBar('ratio',   sub.macro_ratio);
-  setBar('density', sub.calorie_density);
-  setBar('size',    sub.portion_size);
-
-  document.getElementById('score-advice').textContent = score.advice;
-
   if (data.targets) {
     const t = data.targets;
+    setProgress('kcal',    data.kcal_per_100g, t.per_meal_kcal,      'kcal');
+    setProgress('protein', data.protein_g,     t.per_meal_protein_g, 'g');
+    setProgress('carbs',   data.carb_g,        t.per_meal_carb_g,    'g');
+    setProgress('fat',     data.fat_g,         t.per_meal_fat_g,     'g');
+
     document.getElementById('score-targets').textContent =
-      `BSA ${t.user_bsa} m² · scale ${t.scale_factor}× · target ${Math.round(t.per_meal_protein_g)}g protein/meal`;
+      `BSA ${t.user_bsa} m² · scale ${t.scale_factor}× · targets per day`;
   }
 }
 
-function setBar(id, value) {
-  const fill = document.getElementById(`bar-${id}`);
-  const val  = document.getElementById(`val-${id}`);
-  fill.style.width = `${Math.min(100, Math.max(0, value))}%`;
-  fill.className = 'score-bar-fill ' + (value >= 75 ? 'high' : value >= 50 ? 'medium' : 'low');
-  val.textContent = Math.round(value);
+// ── Macro progress bars ────────────────────────────────────────────────────────
+function setProgress(id, value, target, unit) {
+  const pct = Math.min(120, (value / target) * 100);
+  document.getElementById(`val-${id}`).textContent   = parseFloat(value).toFixed(1);
+  document.getElementById(`target-${id}`).textContent = Math.round(target);
+  const bar = document.getElementById(`bar-${id}`);
+  bar.style.width = `${Math.min(100, pct)}%`;
+  bar.className   = 'prog-fill ' + (pct >= 100 ? 'over' : pct >= 55 ? 'good' : pct >= 25 ? 'mid' : 'low');
 }
 
 // ── Grad-CAM ───────────────────────────────────────────────────────────────────
@@ -248,10 +236,4 @@ function showError(msg) {
 
 function clearError() {
   document.getElementById('error-banner').classList.add('hidden');
-}
-
-// ── Helpers ────────────────────────────────────────────────────────────────────
-function fmt(val) {
-  const n = parseFloat(val);
-  return isNaN(n) ? '—' : n.toFixed(1);
 }
