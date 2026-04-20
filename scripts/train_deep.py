@@ -22,13 +22,13 @@ import time
 from pathlib import Path
 
 import numpy as np
-import timm
 import torch
 import torch.nn as nn
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
 from src.data import MACRO_COLS, compute_macro_stats, get_dataloaders, load_macro_lookup
+from src.models import MealLensModel
 
 DEVICE = (
     torch.device("mps") if torch.backends.mps.is_available()
@@ -48,46 +48,6 @@ NUM_CLASSES = 101
 OUTPUT_PATH = Path("models/deep.pt")
 STATS_PATH = Path("models/macro_stats.json")  # mean/std for denormalisation at inference
 
-
-class MealLensModel(nn.Module):
-    """EfficientNet-B0 with regression and classification heads."""
-
-    def __init__(self, num_classes: int = NUM_CLASSES) -> None:
-        super().__init__()
-        self.backbone = timm.create_model("efficientnet_b0", pretrained=True, num_classes=0)
-        feat_dim = self.backbone.num_features  # 1280
-
-        self.reg_head = nn.Sequential(
-            nn.Dropout(0.3),
-            nn.Linear(feat_dim, 256),
-            nn.ReLU(),
-            nn.Linear(256, 4),
-        )
-        self.cls_head = nn.Sequential(
-            nn.Dropout(0.3),
-            nn.Linear(feat_dim, num_classes),
-        )
-
-    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        """Returns (macro_preds [B,4], class_logits [B,101])."""
-        feats = self.backbone(x)
-        return self.reg_head(feats), self.cls_head(feats)
-
-    def freeze_backbone(self) -> None:
-        for p in self.backbone.parameters():
-            p.requires_grad = False
-
-    def unfreeze_top_blocks(self, n: int = 2) -> None:
-        """Unfreeze the last n blocks of the EfficientNet backbone."""
-        blocks = list(self.backbone.blocks)
-        for block in blocks[-n:]:
-            for p in block.parameters():
-                p.requires_grad = True
-        # Always unfreeze the head conv + bn
-        for p in self.backbone.conv_head.parameters():
-            p.requires_grad = True
-        for p in self.backbone.bn2.parameters():
-            p.requires_grad = True
 
 
 def make_optimizer(model: MealLensModel, phase: int) -> AdamW:
@@ -178,7 +138,7 @@ def main() -> None:
     }))
 
     loaders = get_dataloaders(batch_size=BATCH_SIZE, num_workers=4)
-    model = MealLensModel().to(DEVICE)
+    model = MealLensModel(pretrained=True).to(DEVICE)
 
     best_val_mae = float("inf")
 
