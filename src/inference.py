@@ -15,10 +15,25 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from PIL import Image
+from torchvision import transforms
 
-from src.data import MACRO_COLS, get_val_transforms
 from src.features import extract_features
 from src.models import MealLensModel
+
+# Defined inline to avoid importing src.data (which pulls in datasets at top level)
+MACRO_COLS = ["kcal_per_100g", "protein_g", "carb_g", "fat_g"]
+
+_IMAGENET_MEAN = (0.485, 0.456, 0.406)
+_IMAGENET_STD  = (0.229, 0.224, 0.225)
+
+
+def get_val_transforms() -> transforms.Compose:
+    return transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(_IMAGENET_MEAN, _IMAGENET_STD),
+    ])
 
 DEVICE = (
     torch.device("mps") if torch.backends.mps.is_available()

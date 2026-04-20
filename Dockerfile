@@ -2,18 +2,18 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system deps for psycopg2 and Pillow
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev gcc && \
-    rm -rf /var/lib/apt/lists/*
+    libpq-dev gcc && rm -rf /var/lib/apt/lists/*
 
-# Install Python deps first (layer cache)
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# CPU-only torch — avoids ~2.5GB of CUDA wheels
+RUN pip install --no-cache-dir \
+    torch==2.3.0 torchvision==0.18.0 \
+    --index-url https://download.pytorch.org/whl/cpu
 
-# Copy application code and model weights
+COPY requirements-prod.txt .
+RUN pip install --no-cache-dir -r requirements-prod.txt
+
 COPY . .
 
 EXPOSE 8000
-
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
