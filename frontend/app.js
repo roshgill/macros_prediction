@@ -21,10 +21,18 @@ const gradcamBtnText  = document.getElementById('gradcam-btn-text');
 const gradcamSpinner  = document.getElementById('gradcam-spinner');
 const dishLabel       = document.getElementById('dish-label');
 const inferenceTime   = document.getElementById('inference-time');
-const samplesRow      = document.getElementById('samples-row');
-const bodyWeightInput = document.getElementById('body-weight');
-const heightFtInput   = document.getElementById('height-ft');
-const heightInInput   = document.getElementById('height-in');
+const samplesRow        = document.getElementById('samples-row');
+const bodyWeightInput   = document.getElementById('body-weight');
+const heightFtInput     = document.getElementById('height-ft');
+const heightInInput     = document.getElementById('height-in');
+const analysisPanel     = document.getElementById('analysis-panel');
+const analysisLoading   = document.getElementById('analysis-loading');
+const bpScore           = document.getElementById('bp-score');
+const bpFoods           = document.getElementById('bp-foods');
+const bpSuggestion      = document.getElementById('bp-suggestion');
+const bpSources         = document.getElementById('bp-sources');
+const bpSummary         = document.getElementById('bp-summary');
+const tipsText          = document.getElementById('tips-text');
 
 // ── Blueprint tips ─────────────────────────────────────────────────────────────
 const TIPS = [
@@ -125,6 +133,10 @@ async function handleFile(file) {
   gradcamBtn.classList.remove('active');
   gradcamBtnText.textContent = 'Why this prediction?';
 
+  // Reset analysis panel
+  analysisPanel.classList.add('hidden');
+  analysisLoading.classList.add('hidden');
+
   resultImg.src = URL.createObjectURL(file);
   results.classList.remove('hidden');
   shimmer.classList.remove('hidden');
@@ -153,10 +165,59 @@ async function runPredict(file) {
     if (!resp.ok) { shimmer.classList.add('hidden'); showError(data.detail || 'Prediction failed.'); return; }
     currentPrediction = data;
     renderResults(data);
+    runAnalyze(data);
   } catch {
     shimmer.classList.add('hidden');
     showError('Network error — is the server running?');
   }
+}
+
+async function runAnalyze(data) {
+  if (!data.top_classes?.length) return;
+
+  analysisLoading.classList.remove('hidden');
+
+  const weightLbs = parseFloat(bodyWeightInput.value) || 154;
+  const heightFt  = parseFloat(heightFtInput.value)   || 6;
+  const heightIn  = parseFloat(heightInInput.value)   || 0;
+  const weightKg  = weightLbs * 0.453592;
+  const heightCm  = (heightFt * 12 + heightIn) * 2.54;
+
+  const fd = new FormData();
+  fd.append('dish_name',     data.top_classes[0].name.replace(/_/g, ' '));
+  fd.append('kcal_per_100g', data.kcal_per_100g);
+  fd.append('protein_g',     data.protein_g);
+  fd.append('carb_g',        data.carb_g);
+  fd.append('fat_g',         data.fat_g);
+  fd.append('body_weight_kg', weightKg);
+  fd.append('height_cm',      heightCm);
+
+  try {
+    const resp = await fetch('/analyze', { method: 'POST', body: fd });
+    const result = await resp.json();
+    analysisLoading.classList.add('hidden');
+    if (resp.ok) {
+      bpScore.textContent = result.score;
+      bpScore.className = 'bp-score-num mono ' + scoreClass(result.score);
+      bpFoods.textContent = result.foods?.join(', ') || '';
+      bpSummary.textContent = result.summary || '';
+      bpSuggestion.textContent = result.suggestion || '';
+      bpSuggestion.style.display = result.suggestion ? '' : 'none';
+      bpSources.innerHTML = (result.sources || []).map(s =>
+        `<a href="${s.url || '#'}" target="_blank" rel="noopener">${s.title}</a>`
+      ).join('');
+      analysisPanel.classList.remove('hidden');
+    }
+  } catch {
+    analysisLoading.classList.add('hidden');
+  }
+}
+
+function scoreClass(score) {
+  if (score >= 80) return 'score-high';
+  if (score >= 60) return 'score-mid';
+  if (score >= 40) return 'score-low';
+  return 'score-off';
 }
 
 function renderResults(data) {

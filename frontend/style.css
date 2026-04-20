@@ -131,7 +131,6 @@ body {
   width: fit-content;
 }
 
-.side-right .side-heading { text-align: left; }
 
 .side-tip {
   font-size: 0.72rem;
@@ -141,6 +140,81 @@ body {
   transition: opacity 0.45s ease;
 }
 .side-tip.fade { opacity: 0; }
+
+/* ── Blueprint analysis panel ───────────────────────────────────────────────── */
+.bp-score-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+
+.bp-score-num {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+  transition: color var(--transition);
+}
+
+.bp-score-num.score-high { color: var(--accent2); }
+.bp-score-num.score-mid  { color: var(--accent); }
+.bp-score-num.score-low  { color: #a07830; }
+.bp-score-num.score-off  { color: var(--danger); }
+
+.bp-score-label {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  font-family: var(--mono);
+}
+
+.bp-foods {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+
+.bp-summary {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-family: var(--sans);
+  line-height: 1.55;
+  margin-bottom: 6px;
+}
+
+.bp-suggestion {
+  font-size: 0.68rem;
+  color: var(--accent);
+  font-family: var(--sans);
+  line-height: 1.55;
+  margin-top: 2px;
+}
+
+.bp-sources a {
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  display: block;
+  text-decoration: none;
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bp-sources a:hover { text-decoration: underline; color: var(--text-muted); }
+
+.bp-loading-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 4px;
+}
+
+.bp-loading-text {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  font-family: var(--mono);
+}
 
 @media (max-width: 900px) {
   .page-grid {

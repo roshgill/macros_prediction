@@ -62,7 +62,7 @@
   <!-- Three-column page grid -->
   <div class="page-grid">
 
-    <!-- LEFT: model stats -->
+    <!-- LEFT: model stats + rotating tips -->
     <aside class="side-panel side-left">
       <p class="side-heading">Model</p>
       <ul class="side-stat-list">
@@ -80,6 +80,9 @@
         <li class="side-chip">carbs ±6.4g</li>
         <li class="side-chip">fat ±3.3g</li>
       </ul>
+      <div class="side-rule"></div>
+      <p class="side-heading">◆ Blueprint</p>
+      <p class="side-tip" id="tips-text"></p>
     </aside>
 
     <!-- CENTER: main interactive area -->
@@ -190,11 +193,29 @@
 
     </main>
 
-    <!-- RIGHT: rotating Blueprint tips -->
+    <!-- RIGHT: Blueprint analysis (score, summary, foods, suggestion, sources) -->
     <aside class="side-panel side-right">
       <p class="side-heading">◆ Blueprint</p>
       <div class="side-rule"></div>
-      <p class="side-tip" id="tips-text"></p>
+
+      <!-- Loading state -->
+      <div id="analysis-loading" class="hidden">
+        <div class="bp-loading-row">
+          <span class="btn-spinner"></span>
+          <span class="bp-loading-text">Analyzing…</span>
+        </div>
+      </div>
+
+      <!-- Score + details (hidden until /analyze returns) -->
+      <div id="analysis-panel" class="hidden">
+        <div class="bp-score-wrap">
+          <span class="bp-score-num mono" id="bp-score">—</span>
+          <span class="bp-score-label">/100</span>
+        </div>
+        <p id="bp-summary" class="bp-summary"></p>
+        <p id="bp-suggestion" class="bp-suggestion"></p>
+        <div id="bp-sources" class="bp-sources"></div>
+      </div>
     </aside>
 
   </div><!-- /page-grid -->
