@@ -92,13 +92,14 @@ def overlay_heatmap(
     Returns:
         PIL RGBA image with heatmap overlay.
     """
-    import matplotlib.cm as cm
-
     img_resized = image.convert("RGB").resize((224, 224))
     img_arr = np.array(img_resized, dtype=np.float32) / 255.0
 
-    colormap = cm.get_cmap("jet")
-    heatmap = colormap(cam)[:, :, :3].astype(np.float32)  # (H, W, 3), drop alpha
+    # Jet colormap in pure numpy — avoids matplotlib dependency
+    r = np.clip(1.5 - np.abs(4 * cam - 3), 0, 1)
+    g = np.clip(1.5 - np.abs(4 * cam - 2), 0, 1)
+    b = np.clip(1.5 - np.abs(4 * cam - 1), 0, 1)
+    heatmap = np.stack([r, g, b], axis=-1).astype(np.float32)
 
     blended = (1 - alpha) * img_arr + alpha * heatmap
     blended = np.clip(blended * 255, 0, 255).astype(np.uint8)
