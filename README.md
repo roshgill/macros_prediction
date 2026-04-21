@@ -4,7 +4,7 @@
 
 A fine-tuned EfficientNet-B0 identifies the dish from 101 Food-101 categories and predicts nutritional content. Adjust the portion weight slider to convert per-100g values to per-serving totals. An LLM-powered Blueprint protocol analyzer then scores the meal against personalised longevity targets.
 
-**Live demo:** [meallens on Railway](https://macros-prediction-production.up.railway.app)
+**Live demo:** [optimal on Railway](https://macrosprediction-production.up.railway.app/)
 
 ---
 
