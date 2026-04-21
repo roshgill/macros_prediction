@@ -13,8 +13,7 @@ import numpy as np
 import torch
 from PIL import Image
 
-from src.data import get_val_transforms
-from src.inference import DEVICE, DeepModelBundle
+from src.inference import DEVICE, DeepModelBundle, get_val_transforms
 
 
 def compute_gradcam(
