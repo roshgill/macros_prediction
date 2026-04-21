@@ -28,7 +28,6 @@ const heightInInput     = document.getElementById('height-in');
 const analysisPanel     = document.getElementById('analysis-panel');
 const analysisLoading   = document.getElementById('analysis-loading');
 const bpScore           = document.getElementById('bp-score');
-const bpFoods           = document.getElementById('bp-foods');
 const bpSuggestion      = document.getElementById('bp-suggestion');
 const bpSources         = document.getElementById('bp-sources');
 const bpSummary         = document.getElementById('bp-summary');
@@ -199,7 +198,6 @@ async function runAnalyze(data) {
     if (resp.ok) {
       bpScore.textContent = result.score;
       bpScore.className = 'bp-score-num mono ' + scoreClass(result.score);
-      bpFoods.textContent = result.foods?.join(', ') || '';
       bpSummary.textContent = result.summary || '';
       bpSuggestion.textContent = result.suggestion || '';
       bpSuggestion.style.display = result.suggestion ? '' : 'none';
