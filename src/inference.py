@@ -106,7 +106,7 @@ def load_deep_model(
     macro_std = np.array(stats["std"], dtype=np.float32)
 
     model = MealLensModel(pretrained=False)
-    model.load_state_dict(torch.load(model_path, map_location=DEVICE))
+    model.load_state_dict(torch.load(model_path, map_location=DEVICE, weights_only=False))
     model.to(DEVICE)
     model.eval()
 
